@@ -1,11 +1,14 @@
+import { Suspense, lazy } from 'react';
 import { ImageModalProvider } from './context/ImageModalContext';
 import { Navbar } from './components/layout/Navbar';
 import { Hero } from './components/sections/Hero';
-import { ProductCategories } from './components/sections/ProductCategories';
-import { Watches } from './components/sections/Watches';
-import { SourceWatch } from './components/sections/SourceWatch';
-import { Jewellery } from './components/sections/Jewellery';
 import { Footer } from './components/layout/Footer';
+
+// Lazy load below-the-fold content
+const ProductCategories = lazy(() => import('./components/sections/ProductCategories').then(module => ({ default: module.ProductCategories })));
+const Watches = lazy(() => import('./components/sections/Watches').then(module => ({ default: module.Watches })));
+const SourceWatch = lazy(() => import('./components/sections/SourceWatch').then(module => ({ default: module.SourceWatch })));
+const Jewellery = lazy(() => import('./components/sections/Jewellery').then(module => ({ default: module.Jewellery })));
 
 function App() {
   return (
@@ -14,10 +17,12 @@ function App() {
         <Navbar />
         <main>
           <Hero />
-          <ProductCategories />
-          <Watches />
-          <SourceWatch />
-          <Jewellery />
+          <Suspense fallback={<div className="h-screen bg-[#0a0a0a]" />}>
+            <ProductCategories />
+            <Watches />
+            <SourceWatch />
+            <Jewellery />
+          </Suspense>
         </main>
         <Footer />
       </div>

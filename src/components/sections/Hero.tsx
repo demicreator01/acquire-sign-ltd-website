@@ -46,6 +46,7 @@ export function Hero() {
                     className={`w-full h-full object-cover animate-ken-burns transition-opacity duration-[600ms] ease-out ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
                     onLoad={() => setImgLoaded(true)}
                     loading="eager"
+                    fetchPriority="high"
                 />
             </div>
 
