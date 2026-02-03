@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useRef } from 'react';
+import React, { createContext, useContext, useState, useRef, useEffect } from 'react';
 import { X, ZoomIn } from 'lucide-react';
 
 interface ImageModalContextType {
@@ -20,6 +20,18 @@ export function ImageModalProvider({ children }: { children: React.ReactNode }) 
     const [isOpen, setIsOpen] = useState(false); // Controls rendering
     const [isVisible, setIsVisible] = useState(false); // Controls CSS transition
     const [imgSrc, setImgSrc] = useState('');
+
+    // Lock scrolling when modal is open
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [isOpen]);
 
     // Zoom/Pan State
     const [scale, setScale] = useState(1);

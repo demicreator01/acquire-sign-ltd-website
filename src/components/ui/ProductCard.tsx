@@ -20,8 +20,17 @@ export function ProductCard({ product }: { product: Product }) {
             {/* Image Area - darker frame */}
             <div className="p-3">
                 <div
-                    className="aspect-square rounded-lg overflow-hidden bg-[#0a0a0a] relative cursor-zoom-in"
+                    className="aspect-square rounded-lg overflow-hidden bg-[#0a0a0a] relative cursor-zoom-in focus:outline-none focus:ring-2 focus:ring-[#d4af37]"
                     onClick={() => openModal(product.image)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            openModal(product.image);
+                        }
+                    }}
+                    aria-label={`View ${product.name} in detail`}
                 >
                     <img
                         src={product.image}
