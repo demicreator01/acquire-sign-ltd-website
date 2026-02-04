@@ -2,12 +2,12 @@ import { useState, useEffect, useRef } from 'react';
 import { useImageModal } from '../../context/ImageModalContext';
 
 const CATEGORIES = [
-    { id: 1, name: 'Watches', image: '/images/collection-watch.png' },
-    { id: 2, name: 'Rings', image: '/images/collection-ring.png' },
-    { id: 3, name: 'Necklaces', image: '/images/collection-necklace.png' },
-    { id: 4, name: 'Bracelets', image: '/images/collection-bracelet.png' },
-    { id: 5, name: 'Earrings', image: '/images/collection-earrings.png' },
-    { id: 6, name: 'Accessories', image: 'https://images.unsplash.com/photo-1627123424574-724758594e93?q=80&w=1000&auto=format&fit=crop' },
+    { id: 1, name: 'Watches', image: '/images/collection-watch.jpg' },
+    { id: 2, name: 'Rings', image: '/images/collection-ring.jpg' },
+    { id: 3, name: 'Necklaces', image: '/images/collection-necklace.jpg' },
+    { id: 4, name: 'Bracelets', image: '/images/collection-bracelet.jpg' },
+    { id: 5, name: 'Earrings', image: '/images/collection-earrings.jpg' },
+    { id: 6, name: 'Accessories', image: 'https://images.unsplash.com/photo-1627123424574-724758594e93?q=70&w=600&auto=format&fit=crop' },
 ];
 
 export function ProductCategories() {
@@ -117,6 +117,9 @@ function CategoryCard({ category, index }: { category: typeof CATEGORIES[0], ind
                     alt={category.name}
                     className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 group-active:scale-95"
                     loading="lazy"
+                    decoding="async"
+                    width="400"
+                    height="533"
                 />
             </div>
 

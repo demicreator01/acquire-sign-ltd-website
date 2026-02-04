@@ -41,12 +41,14 @@ export function Hero() {
             {/* z-10: Image with Ken Burns */}
             <div className="absolute inset-0 w-full h-full pointer-events-none z-10">
                 <img
-                    src="/images/hero-watch.png"
+                    src="/images/hero-watch.jpg"
                     alt="Luxury Watch Background"
-                    className={`w-full h-full object-cover animate-ken-burns transition-opacity duration-[600ms] ease-out ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
+                    className={`w-full h-full object-cover animate-ken-burns transition-opacity duration-700 ease-out ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
                     onLoad={() => setImgLoaded(true)}
                     loading="eager"
                     fetchPriority="high"
+                    width="1920"
+                    height="1080"
                 />
             </div>
 

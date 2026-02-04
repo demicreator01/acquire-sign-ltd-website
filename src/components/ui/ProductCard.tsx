@@ -37,6 +37,8 @@ export function ProductCard({ product }: { product: Product }) {
                         alt={product.name}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         loading="lazy"
+                        width="300"
+                        height="300"
                     />
                     {/* Subtle inner shadow on image */}
                     <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.3)] pointer-events-none rounded-lg" />
