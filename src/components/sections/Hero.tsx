@@ -1,15 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense, lazy } from 'react';
 
-// Random Position Generators for Particles (approximate distribution)
-const PARTICLES = Array.from({ length: 12 }).map((_, i) => ({
-    id: i,
-    top: `${Math.random() * 100}%`,
-    left: `${Math.random() * 100}%`,
-    size: Math.random() * 3 + 2, // 2px to 5px
-    animation: `animate-float-${(i % 4) + 1}`, // Cycle through float-1 to float-4
-    delay: `${Math.random() * 6}s`,
-    duration: `${Math.random() * 10 + 8}s` // 8s to 18s
-}));
+// Lazy load Particles for code splitting (Mobile Performance)
+const GoldParticles = lazy(() => import('../effects/GoldParticles'));
+
+
 
 export function Hero() {
     const [imgLoaded, setImgLoaded] = useState(false);
@@ -52,41 +46,29 @@ export function Hero() {
             {/* z-0: Skeleton Gradient Background (Permanent) */}
             <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-[#0f0c08] to-[#030303] z-0" />
 
-            {/* z-10: Image with Ken Burns (Fix LCP with srcset) */}
+            {/* z-10: Image with Ken Burns (Fix LCP with picture tag) */}
             <div className="absolute inset-0 w-full h-full pointer-events-none z-10">
-                <img
-                    src="/images/hero-watch.jpg"
-                    srcSet="/images/hero-watch-mobile.jpg 800w, /images/hero-watch.jpg 1920w"
-                    sizes="(max-width: 768px) 800px, 100vw"
-                    alt="Luxury Watch Background"
-                    className={`w-full h-full object-cover animate-ken-burns transition-opacity duration-700 ease-out ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
-                    onLoad={() => setImgLoaded(true)}
-                    loading="eager"
-                    fetchPriority="high"
-                    width="1920"
-                    height="1080"
-                />
+                <picture>
+                    <source media="(max-width: 768px)" srcSet="/images/hero-watch-mobile.jpg" />
+                    <source media="(min-width: 769px)" srcSet="/images/hero-watch.jpg" />
+                    <img
+                        src="/images/hero-watch.jpg"
+                        alt="Luxury Watch Background"
+                        className={`w-full h-full object-cover animate-ken-burns transition-opacity duration-700 ease-out ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
+                        onLoad={() => setImgLoaded(true)}
+                        loading="eager"
+                        fetchPriority="high"
+                        width="1920"
+                        height="1080"
+                    />
+                </picture>
             </div>
 
-            {/* z-15: Gold Particle Dust (DISABLED ON MOBILE TO FIX TBT) */}
+            {/* z-15: Gold Particle Dust (Lazy Loaded & Disabled on Mobile) */}
             {!isMobile && (
-                <div className="absolute inset-0 pointer-events-none z-15 overflow-hidden">
-                    {PARTICLES.map((p) => (
-                        <div
-                            key={p.id}
-                            className={`absolute rounded-full ${p.animation}`}
-                            style={{
-                                top: p.top,
-                                left: p.left,
-                                width: `${p.size}px`,
-                                height: `${p.size}px`,
-                                background: 'radial-gradient(circle, rgba(212, 175, 55, 0.6) 0%, rgba(212, 175, 55, 0) 100%)',
-                                animationDelay: p.delay,
-                                animationDuration: p.duration
-                            }}
-                        />
-                    ))}
-                </div>
+                <Suspense fallback={null}>
+                    <GoldParticles />
+                </Suspense>
             )}
 
             {/* z-20: Dark Overlay */}

@@ -23,7 +23,7 @@ export function Navbar() {
             >
                 <div className="max-w-[1100px] mx-auto px-6 flex items-center justify-between">
                     <div className="flex-shrink-0 z-50">
-                        <a href="#" className="text-[#f5f5f0] font-display text-2xl tracking-wider">
+                        <a href="#" className="text-[#f5f5f0] font-display text-lg md:text-2xl tracking-wider">
                             ACQUIRE SIGN LTD.
                         </a>
                     </div>

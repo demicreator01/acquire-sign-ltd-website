@@ -106,18 +106,21 @@
 
   @keyframes draw-line {
     0% {
-      width: 0px;
+      transform: scaleX(0);
     }
 
     100% {
-      width: 60px;
+      transform: scaleX(1);
     }
   }
 
   .animate-draw-line {
     animation: draw-line 800ms var(--ease-lux) forwards;
     animation-delay: 1000ms;
-    width: 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    width: 60px;
+    /* Set fixed width, animate scale instead */
   }
 
   @keyframes pulse-down {
