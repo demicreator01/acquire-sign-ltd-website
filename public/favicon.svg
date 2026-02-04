@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Background: Dark Circle -->
+  <circle cx="50" cy="50" r="50" fill="#0a0a0a" />
+  
+  <!-- Border: Thin Gold Ring -->
+  <circle cx="50" cy="50" r="47" fill="none" stroke="#d4af37" stroke-width="1.5" />
+  
+  <!-- Text: Luxury "A" -->
+  <text x="50" y="55" 
+        font-family="'Playfair Display', 'Didot', 'Bodoni MT', 'Times New Roman', serif" 
+        font-size="60" 
+        font-weight="bold" 
+        fill="#d4af37" 
+        text-anchor="middle" 
+        dominant-baseline="middle">A</text>
+</svg>
