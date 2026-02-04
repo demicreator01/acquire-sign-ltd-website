@@ -46,6 +46,7 @@ export function Navbar() {
                     <div className="md:hidden z-50">
                         <button
                             onClick={toggleMenu}
+                            aria-label="Open menu"
                             className="text-[#d4af37] focus:outline-none relative w-8 h-8 flex items-center justify-center"
                         >
                             <div className={`w-6 h-[2px] bg-[#d4af37] transition-all duration-300 absolute ${isOpen ? 'rotate-45' : 'translate-y-[-8px]'}`} />

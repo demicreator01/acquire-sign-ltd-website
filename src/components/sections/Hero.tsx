@@ -14,6 +14,20 @@ const PARTICLES = Array.from({ length: 12 }).map((_, i) => ({
 export function Hero() {
     const [imgLoaded, setImgLoaded] = useState(false);
     const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+    const [isMobile, setIsMobile] = useState(true); // Default to true to prevent hydration mismatch/flash of heavy content
+
+    // Mobile Check Logic (Fix for TBT)
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        // Check initially
+        checkMobile();
+
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     // Scroll Indicator Logic
     useEffect(() => {
@@ -38,10 +52,12 @@ export function Hero() {
             {/* z-0: Skeleton Gradient Background (Permanent) */}
             <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-[#0f0c08] to-[#030303] z-0" />
 
-            {/* z-10: Image with Ken Burns */}
+            {/* z-10: Image with Ken Burns (Fix LCP with srcset) */}
             <div className="absolute inset-0 w-full h-full pointer-events-none z-10">
                 <img
                     src="/images/hero-watch.jpg"
+                    srcSet="/images/hero-watch-mobile.jpg 800w, /images/hero-watch.jpg 1920w"
+                    sizes="(max-width: 768px) 800px, 100vw"
                     alt="Luxury Watch Background"
                     className={`w-full h-full object-cover animate-ken-burns transition-opacity duration-700 ease-out ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
                     onLoad={() => setImgLoaded(true)}
@@ -52,24 +68,26 @@ export function Hero() {
                 />
             </div>
 
-            {/* z-15: Gold Particle Dust */}
-            <div className="absolute inset-0 pointer-events-none z-15 overflow-hidden">
-                {PARTICLES.map((p) => (
-                    <div
-                        key={p.id}
-                        className={`absolute rounded-full ${p.animation}`}
-                        style={{
-                            top: p.top,
-                            left: p.left,
-                            width: `${p.size}px`,
-                            height: `${p.size}px`,
-                            background: 'radial-gradient(circle, rgba(212, 175, 55, 0.6) 0%, rgba(212, 175, 55, 0) 100%)',
-                            animationDelay: p.delay,
-                            animationDuration: p.duration
-                        }}
-                    />
-                ))}
-            </div>
+            {/* z-15: Gold Particle Dust (DISABLED ON MOBILE TO FIX TBT) */}
+            {!isMobile && (
+                <div className="absolute inset-0 pointer-events-none z-15 overflow-hidden">
+                    {PARTICLES.map((p) => (
+                        <div
+                            key={p.id}
+                            className={`absolute rounded-full ${p.animation}`}
+                            style={{
+                                top: p.top,
+                                left: p.left,
+                                width: `${p.size}px`,
+                                height: `${p.size}px`,
+                                background: 'radial-gradient(circle, rgba(212, 175, 55, 0.6) 0%, rgba(212, 175, 55, 0) 100%)',
+                                animationDelay: p.delay,
+                                animationDuration: p.duration
+                            }}
+                        />
+                    ))}
+                </div>
+            )}
 
             {/* z-20: Dark Overlay */}
             <div className="absolute inset-0 bg-black/45 z-20" />
@@ -82,7 +100,8 @@ export function Hero() {
                         Timepieces & Jewellery
                     </span>
                     <div className="flex flex-col items-center lg:items-start w-full">
-                        <span className="text-[#d4af37] text-3xl md:text-5xl lg:text-6xl font-display italic mt-4 glow-text-gold opacity-0 animate-fade-in-up" style={{ animationDelay: '400ms' }}>
+                        {/* Modified Color for Accessibility Compliance (#c5a028) */}
+                        <span className="text-[#c5a028] text-3xl md:text-5xl lg:text-6xl font-display italic mt-4 glow-text-gold opacity-0 animate-fade-in-up" style={{ animationDelay: '400ms' }}>
                             Curated for You
                         </span>
                         {/* Animated Gold Underline */}
@@ -104,6 +123,7 @@ export function Hero() {
             {/* z-30: Scroll Indicator */}
             <div
                 className={`absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center transition-opacity duration-400 ${showScrollIndicator ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+                aria-hidden="true"
             >
                 <div className="w-[2px] h-6 bg-[#d4af37]/60 animate-pulse-down" />
                 <div className="scroll-chevron animate-pulse-down" style={{ animationDelay: '0.1s' }} />
